@@ -1,0 +1,9 @@
+services:
+  ml-train:
+    build:
+      context: ml-train
+      dockerfile: Dockerfile
+    image: ml-train
+    container_name: ml-train
+    environment:
+      - PYENV=development
