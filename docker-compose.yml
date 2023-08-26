@@ -5,5 +5,10 @@ services:
       dockerfile: Dockerfile
     image: ml-train
     container_name: ml-train
+    networks:
+      - ml-network
     environment:
       - PYENV=development
+
+networks:
+  ml-network:

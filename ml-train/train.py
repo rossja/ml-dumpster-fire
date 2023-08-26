@@ -3,9 +3,12 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 
+def parse_data(file_path):
+    data = pd.read_csv(file_path)
+    return data
 
 def setup_data(file_path):
-    home_data = pd.read_csv(file_path)
+    home_data = parse_data(file_path)
 
     # create target object and call it y
     y = home_data.SalePrice
@@ -18,7 +21,7 @@ def setup_data(file_path):
     # split data into validation and training sets
     # (static random_state ensures we get same split every time)
     train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=1)
-    return X, train_X, val_X, y, train_y, val_y
+    return train_X, val_X, train_y, val_y
 
 
 def setup_model(train_X, val_X, train_y, val_y):
@@ -50,7 +53,7 @@ def calculate_tree_size(train_X, val_X, train_y, val_y):
 
 def main():
     # get the model set up using the data from the training set
-    X, train_X, val_X, y, train_y, val_y = setup_data('train.csv')
+    train_X, val_X, train_y, val_y = setup_data('train.csv')
     model = setup_model(train_X, val_X, train_y, val_y)
     tree_size = calculate_tree_size(train_X, val_X, train_y, val_y)
 
@@ -61,9 +64,23 @@ def main():
 
     optimized_model = DecisionTreeRegressor(max_leaf_nodes=tree_size, random_state=1)
 
-    # fit the final model and uncomment the next two lines
+    home_data = parse_data('train.csv')
+
+    # create target object and call it y
+    y = home_data.SalePrice
+
+    # create X (features)
+    features = ['LotArea', 'YearBuilt', '1stFlrSF', '2ndFlrSF',
+                'FullBath', 'BedroomAbvGr', 'TotRmsAbvGrd']
+    X = home_data[features]
+
+    # fit the optimized model
     optimized_model.fit(X, y)
-    print(X.head())
+
+    # make predictions which we will submit.
+    price_predictions = optimized_model.predict(X.head())
+    print(price_predictions)
+
 
 
 if __name__ == "__main__":
