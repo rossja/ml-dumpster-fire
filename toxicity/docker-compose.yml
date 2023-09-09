@@ -1,0 +1,26 @@
+services:
+
+  toxicity:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: toxicity
+    container_name: toxicity
+    volumes:
+      - ../../models/unitary_toxic-bert:/models/unitary_toxic-bert
+    networks:
+      - llm-dumpster
+
+  unbiased:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: unbiased
+    container_name: unbiased
+    volumes:
+      - ../../models/unitary_unbiased-toxic-roberta:/models/unitary_unbiased-toxic-roberta
+    networks:
+      - llm-dumpster
+
+networks:
+  llm-dumpster:

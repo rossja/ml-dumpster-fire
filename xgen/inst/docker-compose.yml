@@ -1,0 +1,15 @@
+services:
+
+  xgen-7b-8k-inst:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: xgen-7b-8k-inst
+    container_name: xgen-7b-8k-inst
+    volumes:
+      - ../../models/transformers/Salesforce/xgen-7b-8k-inst:/models/transformers/Salesforce/xgen-7b-8k-inst
+    networks:
+      - llm-dumpster
+
+networks:
+  llm-dumpster:
