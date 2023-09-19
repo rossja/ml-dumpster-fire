@@ -10,6 +10,5 @@ RUN  pip install --upgrade pip
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY unbiased.py .
-CMD ["python", "unbiased.py"]
-# CMD ["sleep", "infinity"]
+COPY toxicity.py .
+CMD ["python", "toxicity.py"]
