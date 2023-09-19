@@ -1,43 +1,44 @@
-# thanks to https://pub.towardsai.net/a-simple-hugging-face-guide-to-chatting-with-the-llama-2-7b-model-in-a-colab-notebook-34f4a7e36e17
-import torch
-from transformers import AutoTokenizer
-from transformers import pipeline
 
-model = "../../models/meta-llama_Llama-2-7b-chat-hf"
-tokenizer = AutoTokenizer.from_pretrained(model, local_files_only=True)
-
-llama_pipeline = pipeline(
-    "text-generation",
-    model=model,
-    torch_dtype=torch.float16,
-    device_map="auto",
-)
+def hf_login(token):
+    """
+    Login to the HuggingFace Hub.
+    """
+    from huggingface_hub import login
+    login(token=token, add_to_git_credential=True)
 
 
 def get_llama_response(prompt: str) -> None:
-    """
-    Generate a response from the Llama model.
+    import torch
+    model_name = "meta-llama/Llama-2-7b-chat-hf"
+    tokenizer = LlamaTokenizer.from_pretrained(model_name, use_auth_token=access_token)
+    model = LlamaForCausalLM.from_pretrained(model_name, use_auth_token=access_token)
 
-    Parameters:
-        prompt (str): The user's input/question for the model.
-
-    Returns:
-        None: Prints the model's response.
-    """
-
-    sequences = llama_pipeline(
-        prompt,
-        do_sample=True,
-        top_k=10,
-        num_return_sequences=1,
-        eos_token_id=tokenizer.eos_token_id,
-        max_length=256,
+    pipeline = transformers.pipeline("text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        torch_dtype=torch.float16,
+        device = torch.device('mps', index=0)
     )
-    print("Chatbot:", sequences[0]['generated_text'])
+
+    sequences = pipeline("what is the recipe of mayonnaise?",
+        temperature=0.9,
+        top_k=50,
+        top_p=0.9,
+        max_length=500
+    )
+
+    for seq in sequences:
+        print(seq['generated_text'])
+
 
 def test():
+    import os
+    HF_TOKEN = os.environ.get("HF_TOKEN")
+    hf_login(HF_TOKEN)
+
     prompt = 'how are you?\n'
     get_llama_response(prompt)
+
 
 def main():
     while True:
@@ -48,4 +49,5 @@ def main():
         get_llama_response(user_input)
 
 if __name__ == "__main__":
-    main()
+    test()
+    #main()
