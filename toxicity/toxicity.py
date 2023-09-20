@@ -1,10 +1,11 @@
 
 # checks the toxicity of provided text
 # returns a dictionary of probabilities for each toxicity category
-def check_toxicity(text):
+def check_toxicity(text = input("Enter text to check toxicity: ")):
   from detoxify import Detoxify
   results = Detoxify("original").predict(text)
-  return results
+  # return results
+  print_results(results, text)
 
 # runs a test sample of toxic and nontoxic text
 def test():
@@ -30,4 +31,5 @@ def print_results(results, text):
   print("\n%s\n" % pd.DataFrame(results, index=[text]).round(5))
 
 if __name__ == "__main__":
-  test()
+  # test()
+  check_toxicity()
