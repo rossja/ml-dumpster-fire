@@ -10,6 +10,10 @@ def classify(input_text):
   result = classifier(input_text)
   return result
 
-text = "I love using Hugging Face for NLP tasks!"
-result = classify(text)
-print(result)
+def main():
+  text = "I love using Hugging Face for NLP tasks!"
+  result = classify(text)
+  print(result)
+
+if __name__ == "__main__":
+  main()
