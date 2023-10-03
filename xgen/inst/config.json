@@ -1,0 +1,11 @@
+{
+  "bos_token_id": 1,
+  "do_sample": true,
+  "eos_token_id":  50256,
+  "max_length": 4096,
+  "max_new_tokens": 2048,
+  "pad_token_id": 0,
+  "temperature": 0.6,
+  "top_k": 100,
+  "top_p": 0.9,
+}
